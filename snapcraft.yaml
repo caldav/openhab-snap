@@ -1,0 +1,31 @@
+name: openhab
+version: "2"
+summary: OpenHab 2.0
+description: OpenHab, empowering the smart home
+confinement: strict
+
+apps:
+  openhab:
+    command: bin/launcher
+    plugs: [network-bind, network, home]
+
+parts:
+    launcher:
+        plugin: dump
+        source: .
+        organize:
+            launcher: bin/launcher
+    openhab:
+        plugin: dump
+        source: https://openhab.ci.cloudbees.com/job/openHAB-Distribution/lastSuccessfulBuild/artifact/distributions/openhab-offline/target/openhab-offline-2.0.0-SNAPSHOT.tar.gz
+    awk:
+        plugin: autotools
+        source: git://git.savannah.gnu.org/gawk.git
+    zulu:
+        plugin: dump
+        source: http://cdn.azul.com/zulu/bin/zulu8.15.0.1-jdk8.0.92-linux_x64.tar.gz
+        snap:
+            - -demo/
+            - -man/
+            - -sample/
+            - -src.zip
